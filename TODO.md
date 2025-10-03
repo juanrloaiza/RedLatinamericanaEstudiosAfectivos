@@ -1,8 +1,8 @@
 ## Technical
 
 - [X] Implement deployment action
-- [ ] Set up Tailwind
-- [ ] Implement color palette
+- [X] Set up Tailwind
+- [X] Implement color palette
 - [ ] Make home layout
 - [ ] Implement languages
 - [ ] Make pages layout
