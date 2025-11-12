@@ -3,13 +3,14 @@
 - [X] Implement deployment action
 - [X] Set up Tailwind
 - [X] Implement color palette
+- [X] Set up CMS
 - [ ] Make home layout
 - [ ] Implement languages
 - [ ] Make pages layout
 - [ ] Implement members collection
 - [ ] Implement events collection
 
-## Sections 
+## Sections
 
 - [ ] Home
 - [ ] Members
