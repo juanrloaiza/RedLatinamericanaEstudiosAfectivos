@@ -1,0 +1,15 @@
+---
+import { getTranslatedPage } from "../../../lib/directus";
+import { getStaticPathsWithMultilanguageSlug } from "../../i18n/utils";
+
+export async function getStaticPaths() {
+  return getStaticPathsWithMultilanguageSlug("about");
+}
+
+const { lang } = Astro.props;
+const page = await getTranslatedPage("about", lang);
+---
+
+<h1>{page.title}</h1>
+
+<div set:html={page.content} />

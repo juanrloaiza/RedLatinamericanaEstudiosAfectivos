@@ -2,7 +2,7 @@ import { createDirectus, readItems, rest } from '@directus/sdk';
 
 
 // TODO: Change the URL to env variables
-const directus = createDirectus('https://directus.snow-torino.ts.net').with(rest());
+export const directus = createDirectus('https://directus.snow-torino.ts.net').with(rest());
 
 export async function getLanguages() {
     return await directus.request(
@@ -36,4 +36,49 @@ export async function getTranslatedContent(
     );
 
     return content.translations[0];
+}
+
+export async function getTranslatedPage(
+    page: string,
+    language: string,
+) {
+    const content = await directus.request<[{
+        id: string;
+        translations: [Record<string, any>];
+    }]>(
+        readItems("pages", {
+            filter: { page_id: { _eq: page } },
+            deep: {
+                translations: {
+                    _filter: {
+                        languages_code: {
+                            _eq: language,
+                        },
+                    },
+                },
+            },
+            fields: ["translations.slug", "translations.content", "translations.title"],
+            limit: 1,
+        }),
+    );
+
+    return content[0].translations[0];
+}
+
+
+export async function getTranslatedSlugs(
+    page: string,
+) {
+    const content = await directus.request<[{
+        id: string;
+        translations: [Record<string, any>];
+    }]>(
+        readItems("pages", {
+            filter: { page_id: { _eq: page } },
+            fields: ["translations.slug", "translations.languages_code"],
+            limit: 1,
+        }),
+    );
+
+    return content[0].translations;
 }
