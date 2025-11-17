@@ -1,5 +1,5 @@
 import { getTranslatedSlugs } from "../../lib/directus";
-import { languages } from "./ui";
+import { getAvailableLanguages } from "./ui";
 
 
 export async function getStaticPathsWithMultilanguageSlug(page: string) {
@@ -8,15 +8,21 @@ export async function getStaticPathsWithMultilanguageSlug(page: string) {
         slugsRaw.map((item) => [item.languages_code, item.slug]),
     );
 
-    const routes = Object.keys(languages).map((lang) => {
+    const routes = getAvailableLanguages().map((lang) => {
         return { params: { about: slugs[lang], lang }, props: { lang } };
     });
     return routes;
 }
 
 export async function getStaticPathsDefault() {
-    const routes = Object.keys(languages).map((lang) => {
-        return { params: { lang }, props: { lang } };
+    const routes = getAvailableLanguages().map((lang: string) => {
+        const lowercaseLang = lang.toLowerCase()
+        return { params: { lang: lowercaseLang }, props: { lang: lowercaseLang } };
     });
     return routes;
+}
+
+export function getPageFromUrl(url: URL) {
+    const [, lang, ...page] = url.pathname.split('/');
+    return page.join('/')
 }

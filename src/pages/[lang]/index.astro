@@ -1,19 +1,14 @@
 ---
-import { getTranslatedContent, getTranslatedPage } from "../../../lib/directus";
+import { getTranslatedPage } from "../../../lib/directus";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getStaticPathsDefault } from "../../i18n/utils";
 
 export const getStaticPaths = getStaticPathsDefault
 
 const { lang } = Astro.props;
-const global = await getTranslatedContent("global", lang);
-
 const data = await getTranslatedPage("about", lang)
 ---
 
 <BaseLayout>
-    
-
     <div set:html={data.content} />
-
 </BaseLayout>

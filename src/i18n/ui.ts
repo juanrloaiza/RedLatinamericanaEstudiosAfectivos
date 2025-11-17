@@ -1,7 +1,7 @@
 export const languages = {
     "en": 'English',
     "es": 'Español',
-    "pt-BR": "Portugués",
+    "pt-BR": "Português",
 };
 
 export const ui = {
@@ -87,6 +87,9 @@ export const countries = {
 
 export function getLangFromUrl(url: URL) {
     const [, lang] = url.pathname.split('/');
-    if (lang in ui) return lang as keyof typeof ui;
-    return "es";
+    return lang as keyof typeof languages;
+}
+
+export function getAvailableLanguages(){
+    return Object.keys(languages) as [keyof typeof languages]
 }

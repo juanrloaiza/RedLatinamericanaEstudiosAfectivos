@@ -12,6 +12,17 @@ export async function getLanguages() {
     );
 }
 
+export function getDirectusLocaleCode(locale: string) {
+    const directusCodes: Record<string, string> = {
+        "es": "es",
+        "en": "en",
+        "pt-br": "pt-BR"
+    }
+
+    if (locale in directusCodes) return directusCodes[locale]
+    else return "es"
+}
+
 export async function getTranslatedContent(
     collection: string,
     language: string,
@@ -25,7 +36,7 @@ export async function getTranslatedContent(
                 translations: {
                     _filter: {
                         languages_code: {
-                            _eq: language,
+                            _eq: getDirectusLocaleCode(language),
                         },
                     },
                 },
@@ -52,7 +63,7 @@ export async function getTranslatedPage(
                 translations: {
                     _filter: {
                         languages_code: {
-                            _eq: language,
+                            _eq: getDirectusLocaleCode(language),
                         },
                     },
                 },
@@ -96,7 +107,7 @@ export async function getPagesTitlesForLanguage(
                 translations: {
                     _filter: {
                         languages_code: {
-                            _eq: language,
+                            _eq: getDirectusLocaleCode(language),
                         },
                     },
                 },

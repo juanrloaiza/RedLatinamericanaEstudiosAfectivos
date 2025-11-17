@@ -4,16 +4,15 @@ import { getPagesTitlesForLanguage } from "../../lib/directus";
 
 const lang = Astro.currentLocale || "es";
 
-const { page_id, translations: data } = await getPagesTitlesForLanguage(lang);
-
-
-console.log(lang);
+const { translations: data } = await getPagesTitlesForLanguage(lang);
 ---
 
 <div class="block">
     {
         data.map((item) => {
-            return <a href={getRelativeLocaleUrl(lang, item.slug)}>{item.title}</a>;
+            return (
+                <a href={getRelativeLocaleUrl(lang, item.slug)}>{item.title}</a>
+            );
         })
     }
 </div>
