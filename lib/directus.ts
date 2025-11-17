@@ -75,10 +75,35 @@ export async function getTranslatedSlugs(
     }]>(
         readItems("pages", {
             filter: { page_id: { _eq: page } },
-            fields: ["translations.slug", "translations.languages_code"],
+            fields: ["translations.slug", "translations.languages_code", "translations.title"],
             limit: 1,
         }),
     );
 
     return content[0].translations;
+}
+
+export async function getPagesTitlesForLanguage(
+    language: string
+) {
+    const content = await directus.request<[{
+        page_id: string;
+        translations: [Record<string, any>];
+    }]>(
+        readItems("pages", {
+            fields: ["page_id", "translations.slug", "translations.languages_code", "translations.title"],
+            deep: {
+                translations: {
+                    _filter: {
+                        languages_code: {
+                            _eq: language,
+                        },
+                    },
+                },
+            },
+            limit: 1,
+        }),
+    );
+
+    return content[0];
 }

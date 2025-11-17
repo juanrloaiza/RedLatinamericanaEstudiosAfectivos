@@ -1,4 +1,6 @@
 ---
+import LogoHeader from "../components/LogoHeader.astro";
+import Navbar from "../components/Navbar.astro";
 import "../styles/global.css";
 ---
 
@@ -9,5 +11,11 @@ import "../styles/global.css";
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Document</title>
     </head>
-    <body> <slot /></body>
+    <body>
+        <main class="lg:max-w-[1320px] mx-auto px-4 my-5 lg:my-10">
+            <Navbar />
+            <LogoHeader />
+            <slot />
+        </main>
+    </body>
 </html>

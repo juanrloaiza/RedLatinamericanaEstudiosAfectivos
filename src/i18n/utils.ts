@@ -13,3 +13,10 @@ export async function getStaticPathsWithMultilanguageSlug(page: string) {
     });
     return routes;
 }
+
+export async function getStaticPathsDefault() {
+    const routes = Object.keys(languages).map((lang) => {
+        return { params: { lang }, props: { lang } };
+    });
+    return routes;
+}
