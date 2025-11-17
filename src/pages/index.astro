@@ -1,5 +1,11 @@
 ---
+import {getLanguages, getTranslatedContent} from "../../lib/directus";
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const global = await getTranslatedContent("global", "pt-BR")
+
+console.log(await getLanguages())
+
 ---
 
-<BaseLayout> Hi! I'm using Astro + Tailwind now! </BaseLayout>
+{ global.title }
