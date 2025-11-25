@@ -112,9 +112,7 @@ export async function getPagesTitlesForLanguage(
                     },
                 },
             },
-            limit: 1,
         }),
     );
-
-    return content[0];
+    return content.map((page) => page.translations[0]);
 }

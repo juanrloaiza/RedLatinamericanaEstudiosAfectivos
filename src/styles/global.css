@@ -10,3 +10,7 @@
 body {
     color: var(--color-text)
 }
+
+a:hover {
+    font-weight: bold;
+}
