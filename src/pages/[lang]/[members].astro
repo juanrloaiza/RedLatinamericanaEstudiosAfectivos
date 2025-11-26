@@ -1,0 +1,75 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getStaticPathsWithMultilanguageSlug } from "../../i18n/utils";
+import { directus, getDirectusLocaleCode } from "../../../lib/directus";
+import { readItems } from "@directus/sdk";
+
+export const getStaticPaths = await getStaticPathsWithMultilanguageSlug(
+    "members",
+    "members",
+);
+
+interface Member {
+    name: string;
+    last_name: string;
+    institution: string;
+    website: string;
+    country: number;
+    discipline: { id: Number };
+}
+
+const { lang } = Astro.props;
+
+const content = await directus.request<[Member]>(
+    readItems("affiliates", {
+        fields: [
+            "name",
+            "last_name",
+            "institution",
+            "website",
+            "country",
+            "discipline.id",
+        ],
+        deep: {
+            translations: {
+                _filter: {
+                    languages_code: {
+                        _eq: getDirectusLocaleCode(lang),
+                    },
+                },
+            },
+        },
+    }),
+);
+const countryDict: Record<string, string> = {};
+(
+    await directus.request(
+        readItems("countries", {
+            fields: ["id", "translations.name"],
+            deep: {
+                translations: {
+                    _filter: {
+                        languages_code: {
+                            _eq: getDirectusLocaleCode(lang),
+                        },
+                    },
+                },
+            },
+        }),
+    )
+).forEach((country) => {
+    countryDict[country.id] = country.translations[0].name;
+});
+---
+
+<BaseLayout>
+    <div>
+        {
+            content.map((member) => (
+                <div>
+                    {member.name} - {countryDict[member.country]}
+                </div>
+            ))
+        }
+    </div>
+</BaseLayout>

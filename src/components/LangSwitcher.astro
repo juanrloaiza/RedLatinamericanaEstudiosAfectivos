@@ -1,21 +1,36 @@
 ---
 import { getAvailableLanguages, getLangFromUrl, languages } from "../i18n/ui";
+import { getTranslatedSlugs } from "../../lib/directus.ts";
 
 const availableLanguageCodes = getAvailableLanguages();
 const currentLanguage = getLangFromUrl(Astro.url);
 
-const page = getPageFromUrl(Astro.url);
 const otherLangs = availableLanguageCodes.filter(
     (lang) => lang.toLowerCase() !== currentLanguage,
 );
+
+const pageID = await getPageFromUrlSlug(Astro.url);
+const translatedSlugs = await getTranslatedSlugs(pageID);
+
+const slugsForAvailableLanguages = translatedSlugs.filter((pageDict) =>
+    otherLangs.includes(pageDict.languages_code),
+);
+
+const links = slugsForAvailableLanguages.reduce((acc, item) => {
+    if (otherLangs.includes(item.languages_code)) {
+        acc[item.languages_code] = item.slug;
+    }
+    return acc;
+}, {});
+
 import { getRelativeLocaleUrl } from "astro:i18n";
-import { getPageFromUrl } from "../i18n/utils";
+import { getPageFromUrlSlug } from "../i18n/utils";
 ---
 
 <div class="flex gap-x-4 text-xs">
     {
         otherLangs.map((otherLang) => (
-            <a href={getRelativeLocaleUrl(otherLang, page)}>
+            <a href={getRelativeLocaleUrl(otherLang, links[otherLang])}>
                 {languages[otherLang]}
             </a>
         ))

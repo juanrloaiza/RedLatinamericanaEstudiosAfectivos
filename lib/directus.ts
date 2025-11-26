@@ -20,7 +20,7 @@ export function getDirectusLocaleCode(locale: string) {
     }
 
     if (locale in directusCodes) return directusCodes[locale]
-    else return "es"
+    else return locale
 }
 
 export async function getTranslatedContent(
@@ -50,7 +50,7 @@ export async function getTranslatedContent(
 }
 
 export async function getTranslatedPage(
-    page: string,
+    pageID: string,
     language: string,
 ) {
     const content = await directus.request<[{
@@ -58,7 +58,7 @@ export async function getTranslatedPage(
         translations: [Record<string, any>];
     }]>(
         readItems("pages", {
-            filter: { page_id: { _eq: page } },
+            filter: { page_id: { _eq: pageID } },
             deep: {
                 translations: {
                     _filter: {
@@ -72,25 +72,23 @@ export async function getTranslatedPage(
             limit: 1,
         }),
     );
-
     return content[0].translations[0];
 }
 
 
 export async function getTranslatedSlugs(
-    page: string,
+    pageID: string,
 ) {
     const content = await directus.request<[{
         id: string;
         translations: [Record<string, any>];
     }]>(
         readItems("pages", {
-            filter: { page_id: { _eq: page } },
+            filter: { page_id: { _eq: pageID } },
             fields: ["translations.slug", "translations.languages_code", "translations.title"],
             limit: 1,
         }),
     );
-
     return content[0].translations;
 }
 
@@ -115,4 +113,32 @@ export async function getPagesTitlesForLanguage(
         }),
     );
     return content.map((page) => page.translations[0]);
+}
+
+export async function getPageIDFromSlug(
+    slug: string,
+    language: string
+) {
+    const content = await directus.request<[{
+        page_id: string;
+        translations: [Record<string, any>];
+    }]>(
+        readItems("pages", {
+            fields: ["page_id", "translations.slug"],
+            deep: {
+                translations: {
+                    _filter: {
+                        languages_code: {
+                            _eq: getDirectusLocaleCode(language),
+                        },
+                        slug: {
+                            _eq: slug,
+                        },
+                    },
+                },
+            },
+        }),
+    );
+    const page_id = content.filter(c => c.translations.length > 0)[0].page_id || "about" 
+    return page_id;
 }
