@@ -2,6 +2,8 @@
 import LogoHeader from "../components/LogoHeader.astro";
 import Navbar from "../components/Navbar.astro";
 import "../styles/global.css";
+
+const { title } = Astro.props;
 ---
 
 <!doctype html>
@@ -15,7 +17,10 @@ import "../styles/global.css";
         <main class="lg:max-w-[1320px] mx-auto px-4 my-5 lg:my-10">
             <Navbar />
             <LogoHeader />
-            <slot />
+            <h1 class="text-4xl">{title}</h1>
+            <div class="mt-6">
+                <slot />
+            </div>
         </main>
     </body>
 </html>

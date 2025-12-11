@@ -1,7 +1,11 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getStaticPathsWithMultilanguageSlug } from "../../i18n/utils";
-import { directus, getDirectusLocaleCode } from "../../../lib/directus";
+import {
+    directus,
+    getDirectusLocaleCode,
+    getTranslatedPage,
+} from "../../../lib/directus";
 import { readItems } from "@directus/sdk";
 
 export const getStaticPaths = await getStaticPathsWithMultilanguageSlug(
@@ -15,7 +19,7 @@ interface Member {
     institution: string;
     website: string;
     country: number;
-    discipline: { id: Number };
+    discipline: [number];
 }
 
 const { lang } = Astro.props;
@@ -28,7 +32,7 @@ const content = await directus.request<[Member]>(
             "institution",
             "website",
             "country",
-            "discipline.id",
+            "discipline",
         ],
         deep: {
             translations: {
@@ -60,14 +64,46 @@ const countryDict: Record<string, string> = {};
 ).forEach((country) => {
     countryDict[country.id] = country.translations[0].name;
 });
+
+const disciplineDict: Record<string, string> = {};
+(
+    await directus.request(
+        readItems("disciplines", {
+            fields: ["id", "translations.name"],
+            deep: {
+                translations: {
+                    _filter: {
+                        languages_code: {
+                            _eq: getDirectusLocaleCode(lang),
+                        },
+                    },
+                },
+            },
+        }),
+    )
+).forEach((discipline) => {
+    disciplineDict[discipline.id] = discipline.translations[0].name;
+});
+
+const title = (await getTranslatedPage("members", lang)).title;
 ---
 
-<BaseLayout>
-    <div>
+<BaseLayout title={title}>
+    <div class="grid gap-4 grid-cols-4">
         {
             content.map((member) => (
                 <div>
-                    {member.name} - {countryDict[member.country]}
+                    <div class="text-xl">
+                        {member.name} {member.last_name}
+                    </div>
+                    {member.institution} <br />
+                    {countryDict[member.country]} <br />
+                    {member.website && (
+                        <a href={member.website}>{member.website}</a> <br />
+                    )}
+                    <div class="inline-block py-1 px-2 text-xs bg-gray-300 rounded">
+                        {member.discipline.map((d) => disciplineDict[d])}
+                    </div>
                 </div>
             ))
         }
