@@ -2,25 +2,35 @@
 import { getRelativeLocaleUrl } from "astro:i18n";
 import { getPagesTitlesForLanguage } from "../../lib/directus";
 import LangSwitcher from "./LangSwitcher.astro";
+import { Astronav, MenuItems, MenuIcon } from "astro-navbar";
 
 const lang = Astro.currentLocale || "es";
 
 const data = await getPagesTitlesForLanguage(lang);
 ---
 
-<div class="flex items-center">
-    <div class="flex grow gap-x-4 justify-center">
-        {
-            data.map((item) => {
-                return (
-                    <a href={getRelativeLocaleUrl(lang, item.slug)}>
-                        {item.title}
-                    </a>
-                );
-            })
-        }
+<Astronav>
+    <div
+        class="flex flex-wrap justify-between navbar text-center items-center lg:items-center"
+    >
+        <MenuIcon class="lg:hidden w-6 h-6" />
+        <MenuItems
+            class="hidden w-full mt-4 lg:mt-0 lg:w-auto lg:flex lg:gap-x-4 lg:mr-auto grow-3 order-last lg:order-none"
+        >
+            {
+                data.map((item) => {
+                    return (
+                        <a
+                        class="block lg:inline my-1 lg:my-0 hover:font-bold"
+                        href={getRelativeLocaleUrl(lang, item.slug)}>
+                            {item.title}
+                        </a>
+                    );
+                })
+            }
+        </MenuItems>
+        <div>
+            <LangSwitcher />
+        </div>
     </div>
-    <div>
-        <LangSwitcher />
-    </div>
-</div>
+</Astronav>

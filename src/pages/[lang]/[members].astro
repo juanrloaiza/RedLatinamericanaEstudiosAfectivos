@@ -91,10 +91,10 @@ const title = (await getTranslatedPage("members", lang)).title;
 ---
 
 <BaseLayout title={title}>
-    <div class="grid gap-4 grid-cols-4">
+    <div class="lg:grid gap-4 grid-cols-4">
         {
             content.map((member) => (
-                <div>
+                <div class="mb-6 lg:mb-0">
                     <div class="text-xl">
                         {member.name} {member.last_name}
                     </div>
