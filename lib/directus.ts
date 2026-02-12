@@ -2,7 +2,7 @@ import { createDirectus, readItems, rest } from '@directus/sdk';
 
 
 // TODO: Change the URL to env variables
-export const directus = createDirectus('https://directus.snow-torino.ts.net').with(rest());
+export const directus = createDirectus('https://api.redeaf.org').with(rest());
 
 export async function getLanguages() {
     return await directus.request(
