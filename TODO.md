@@ -4,11 +4,13 @@
 - [X] Set up Tailwind
 - [X] Implement color palette
 - [X] Set up CMS
-- [ ] Make home layout
-- [ ] Implement languages
-- [ ] Make pages layout
-- [ ] Implement members collection
+- [X] Make home layout
+- [X] Implement languages
+- [X] Make pages layout
+- [X] Implement members collection
+- [X] Implement Redis ratelimiter
 - [ ] Implement events collection
+- [ ] Change GitHub Action to build from main
 
 ## Sections
 
