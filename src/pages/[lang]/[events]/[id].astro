@@ -49,7 +49,7 @@ export async function getStaticPaths() {
 
             return content.map((event) => ({
                 params: {
-                    lang,
+                    lang: lang.toLowerCase(),
                     events: eventsSlug,
                     id: event.id,
                 },
@@ -70,6 +70,6 @@ const { event } = Astro.props;
         event.dates[0].start_date != event.dates[0].end_date &&
             event.dates[0].end_date
     }
-    <h3 class="text-2xl">{event.translations[0].title}</h3>
-    <div class="" set:html={event.translations[0].description} />
+    <h3 class="text-2xl mb-3">{event.translations[0].title}</h3>
+    <div class="event-description" set:html={event.translations[0].description} />
 </BaseLayout>

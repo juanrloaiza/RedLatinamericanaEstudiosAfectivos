@@ -10,8 +10,6 @@ export const getStaticPaths = await getStaticPathsWithMultilanguageSlug(
     "events",
 );
 
-
-
 interface Event {
     id: number,
     translations: { title: string; description: string }[];
@@ -45,7 +43,7 @@ const content = await directus.request<[Event]>(
                 },
             },
         },
-        sort: ["id"],
+        sort: ["-dates"],
     }),
 );
 ---
@@ -54,7 +52,7 @@ const content = await directus.request<[Event]>(
     {
         content.map((event) => {
             return (
-                <a href=`${getRelativeLocaleUrl(lang, slug)}${event.id}`>
+                <a class="block mb-6" href=`${getRelativeLocaleUrl(lang, slug)}${event.id}`>
                     <div>{event.dates[0].start_date}</div>
                     {event.dates[0].start_date != event.dates[0].end_date &&
                         event.dates[0].end_date}

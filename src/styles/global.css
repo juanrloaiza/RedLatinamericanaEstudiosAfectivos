@@ -16,3 +16,9 @@ body {
 a:hover {
     font-weight: bold;
 }
+
+.event-description {
+    p {
+        margin-bottom: 1rem
+    }
+}
