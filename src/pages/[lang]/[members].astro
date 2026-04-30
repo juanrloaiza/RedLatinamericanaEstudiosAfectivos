@@ -91,7 +91,7 @@ const title = (await getTranslatedPage("members", lang)).title;
 ---
 
 <BaseLayout title={title}>
-    <div class="lg:grid gap-4 grid-cols-4">
+    <div class="lg:grid gap-10 grid-cols-3">
         {
             content.map((member) => (
                 <div class="mb-6 lg:mb-0">
@@ -100,14 +100,14 @@ const title = (await getTranslatedPage("members", lang)).title;
                     </div>
                     {member.institution} <br />
                     {countryDict[member.country]} <br />
-                    {member.website && (
-                        <a href={member.website}>{member.website}</a> <br />
-                    )}
                  
                     <div class="inline-block py-1 px-2 text-xs bg-gray-300 rounded">    
                         {disciplineDict[member.discipline.id]}
                     </div>
                             
+                    {member.website && (
+                        <a class="inline-block text-xs py-1 px-2 border-1 rounded" href={member.website}>Website</a> <br />
+                    )}
                 </div>
             ))
         }
