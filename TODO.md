@@ -1,14 +1,14 @@
 ## Technical
 
-- [X] Implement deployment action
-- [X] Set up Tailwind
-- [X] Implement color palette
-- [X] Set up CMS
-- [X] Make home layout
-- [X] Implement languages
-- [X] Make pages layout
-- [X] Implement members collection
-- [X] Implement Redis ratelimiter
+- [x] Implement deployment action
+- [x] Set up Tailwind
+- [x] Implement color palette
+- [x] Set up CMS
+- [x] Make home layout
+- [x] Implement languages
+- [x] Make pages layout
+- [x] Implement members collection
+- [x] Implement Redis ratelimiter
 - [ ] Implement events collection
 - [ ] Change GitHub Action to build from main
 

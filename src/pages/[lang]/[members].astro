@@ -20,6 +20,7 @@ interface Member {
     website: string;
     country: number;
     discipline: { id: number };
+    role: number;
 }
 
 const { lang } = Astro.props;
@@ -33,6 +34,7 @@ const content = await directus.request<[Member]>(
             "website",
             "country",
             "discipline.id",
+            "role",
         ],
         deep: {
             translations: {
@@ -43,7 +45,7 @@ const content = await directus.request<[Member]>(
                 },
             },
         },
-        sort: ["last_name"]
+        sort: ["last_name"],
     }),
 );
 const countryDict: Record<string, string> = {};
@@ -86,30 +88,113 @@ const disciplineDict: Record<string, string> = {};
     disciplineDict[discipline.id] = discipline.translations[0].name;
 });
 
-const title = (await getTranslatedPage("members", lang)).title;
+const roleSections = {
+    "pt-BR": {
+        regular: "Membros regulares",
+        executive: "Coordenação executiva",
+        advisor: "Conselho asesor",
+    },
+    en: {
+        regular: "Regular members",
+        executive: "Executive board",
+        advisor: "Advisory board",
+    },
+    es: {
+        regular: "Miembros regulares",
+        executive: "Coordinación ejecutiva",
+        advisor: "Consejo asesor",
+    },
+};
 
+const title = (await getTranslatedPage("members", lang)).title;
 ---
 
 <BaseLayout title={title}>
-    <div class="lg:grid gap-10 grid-cols-3">
-        {
-            content.map((member) => (
-                <div class="mb-6 lg:mb-0">
-                    <div class="text-xl">
-                        {member.name} {member.last_name}
-                    </div>
-                    {member.institution} <br />
-                    {countryDict[member.country]} <br />
-                 
-                    <div class="inline-block py-1 px-2 text-xs bg-gray-300 rounded">    
-                        {disciplineDict[member.discipline.id]}
-                    </div>
-                            
-                    {member.website && (
-                        <a class="inline-block text-xs py-1 px-2 border-1 rounded" href={member.website}>Website</a> <br />
-                    )}
-                </div>
-            ))
-        }
+    <div class="mb-6 pb-6 border-b-1 border-gray-200">
+        <h2 class="text-2xl mb-2">{roleSections[lang]["executive"]}</h2>
+        <div class="lg:grid gap-10 grid-cols-3">
+            {
+                content
+                    .filter((member) => member.role == 3)
+                    .map((member) => (
+                        <div class="mb-6 lg:mb-0">
+                            <div class="text-xl">
+                                {member.name} {member.last_name}
+                            </div>
+                            {member.institution} <br />
+                            {countryDict[member.country]} <br />
+                            <div class="inline-block py-1 px-2 text-xs bg-gray-300 rounded">
+                                {disciplineDict[member.discipline.id]}
+                            </div>
+                            {member.website && (
+                                <a
+                                    class="inline-block text-xs py-1 px-2 border-1 rounded"
+                                    href={member.website}
+                                >
+                                    Website
+                                </a>
+                            )}
+                        </div>
+                    ))
+            }
+        </div>
+    </div>
+    <div class="mb-6 pb-6 border-b-1 border-gray-200">
+        <h2 class="text-2xl mb-2">{roleSections[lang]["advisor"]}</h2>
+        <div class="lg:grid gap-10 grid-cols-3">
+            {
+                content
+                    .filter((member) => member.role == 2)
+                    .map((member) => (
+                        <div class="mb-6 lg:mb-0">
+                            <div class="text-xl">
+                                {member.name} {member.last_name}
+                            </div>
+                            {member.institution} <br />
+                            {countryDict[member.country]} <br />
+                            <div class="inline-block py-1 px-2 text-xs bg-gray-300 rounded">
+                                {disciplineDict[member.discipline.id]}
+                            </div>
+                            {member.website && (
+                                <a
+                                    class="inline-block text-xs py-1 px-2 border-1 rounded"
+                                    href={member.website}
+                                >
+                                    Website
+                                </a>
+                            )}
+                        </div>
+                    ))
+            }
+        </div>
+    </div>
+    <div class="mb-6">
+        <h2 class="text-2xl mb-2">{roleSections[lang]["regular"]}</h2>
+        <div class="lg:grid gap-10 grid-cols-3">
+            {
+                content
+                    .filter((member) => member.role == 1)
+                    .map((member) => (
+                        <div class="mb-6 lg:mb-0">
+                            <div class="text-xl">
+                                {member.name} {member.last_name}
+                            </div>
+                            {member.institution} <br />
+                            {countryDict[member.country]} <br />
+                            <div class="inline-block py-1 px-2 text-xs bg-gray-300 rounded">
+                                {disciplineDict[member.discipline.id]}
+                            </div>
+                            {member.website && (
+                                <a
+                                    class="inline-block text-xs py-1 px-2 border-1 rounded"
+                                    href={member.website}
+                                >
+                                    Website
+                                </a>
+                            )}
+                        </div>
+                    ))
+            }
+        </div>
     </div>
 </BaseLayout>

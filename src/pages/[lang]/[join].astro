@@ -4,13 +4,14 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getStaticPathsWithMultilanguageSlug } from "../../i18n/utils";
 
 const { lang } = Astro.props;
-export const getStaticPaths = await getStaticPathsWithMultilanguageSlug("how-to-join", "join");
+export const getStaticPaths = await getStaticPathsWithMultilanguageSlug(
+  "how-to-join",
+  "join",
+);
 
-const data = await getTranslatedPage("how-to-join", lang)
+const data = await getTranslatedPage("how-to-join", lang);
 ---
 
 <BaseLayout>
-    <div 
-    class="max-w-4xl mx-auto text-justify"
-    set:html={data.content} />
+  <div class="max-w-4xl mx-auto text-justify" set:html={data.content} />
 </BaseLayout>
