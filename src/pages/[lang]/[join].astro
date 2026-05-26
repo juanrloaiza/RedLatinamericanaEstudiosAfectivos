@@ -10,8 +10,9 @@ export const getStaticPaths = await getStaticPathsWithMultilanguageSlug(
 );
 
 const data = await getTranslatedPage("how-to-join", lang);
+
 ---
 
-<BaseLayout>
-  <div class="max-w-4xl mx-auto text-justify" set:html={data.content} />
+<BaseLayout title={data.title}>
+  <div class="join-description" set:html={data.content} />
 </BaseLayout>

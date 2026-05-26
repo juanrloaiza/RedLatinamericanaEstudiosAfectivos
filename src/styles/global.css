@@ -17,8 +17,10 @@ a:hover {
   font-weight: bold;
 }
 
-.event-description {
-  p {
-    margin-bottom: 1rem;
-  }
+p {
+  margin-bottom: 1rem;
+}
+
+.join-description a {
+  color: var(--color-main);
 }
